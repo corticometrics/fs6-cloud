@@ -28,7 +28,7 @@ Most of FreeSurfer will not work if this key is not set.  Liceneses are distribu
 
 Once you have your license, use the output of the following command to set the `FS_KEY` variable:
 ```
-cat $FREESURFER_HOME/license.txt | base64
+cat $FREESURFER_HOME/license.txt | base64 -w 0
 ```
 
 ### The `FS_SUB_NAME` environemnt variable
