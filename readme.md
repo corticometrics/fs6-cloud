@@ -59,8 +59,8 @@ When running though AWS batch.  You either use these environment variables, or c
 
 ```
 docker run -it --rm \
-corticometrics/fs6-aws:latest \
-/bin/bash
+  corticometrics/fs6-aws:latest \
+  /bin/bash
 ```
 
 This doesn't have a FreeSurfer license or any subject data, so it's not particularily interesting.  You can confirm that FreeSurfer wont work by trying something like:
@@ -73,9 +73,9 @@ mri_convert /opt/freesurfer/subjects/sample-001.mgz ~/test.nii.gz
 
 ```
 docker run -it --rm \
--e FS_KEY='xxx' \
-corticometrics/fs6-aws:latest \
-/bin/bash
+  -e FS_KEY='xxx' \
+  corticometrics/fs6-aws:latest \
+  /bin/bash
 ```
 
 Replace `xxx` with the output of `cat $FREESURFER_HOME/license.txt|base64`.  You can get a `license.txt` file for free [here](https://surfer.nmr.mgh.harvard.edu/registration.html)
@@ -90,10 +90,10 @@ mri_convert /opt/freesurfer/subjects/sample-001.mgz ~/test.nii.gz
 
 ```
 docker run -it --rm \
--e FS_KEY='xxx' \
--v /path/to/my/subject_data:/subjects \
-corticometrics/fs6-aws:latest \
-/bin/bash
+  -e FS_KEY='xxx' \
+  -v /path/to/my/subject_data:/subjects \
+  corticometrics/fs6-aws:latest \
+  /bin/bash
 ```
 
 `/path/to/my/subject_data` is where your subject data is kept on your local machine.  Subject data should always be mapped to `/subjects` inside the container
@@ -107,10 +107,10 @@ ls -lR /subjects
   
 ```
 docker run -it --rm \
--e FS_KEY='xxx' \
--v /path/to/my/subject_data:/subjects \
-corticometrics/fs6-aws:latest \
-recon-all -s bert -all -parallel
+  -e FS_KEY='xxx' \
+  -v /path/to/my/subject_data:/subjects \
+  corticometrics/fs6-aws:latest \
+  recon-all -s bert -all -parallel
 ```
 
 This assumes the subject bert lives in a standard FreeSurfer subject directory structure under `/path/to/my/subject_data`. It will take a while to run, so if you want to kill it, from another terminal (outside the container) run `docker ps` to find the containerID, then run `docker kill <containerID>`
@@ -119,10 +119,10 @@ This assumes the subject bert lives in a standard FreeSurfer subject directory s
 
 ```
 docker run -it --rm \
--e FS_KEY='xxx' \
--e AWS_ACCESS_KEY_ID='xxx' \
--e AWS_SECRET_ACCESS_KEY='xxx' \
-corticometrics/fs6-aws /bin/bash
+  -e FS_KEY='xxx' \
+  -e AWS_ACCESS_KEY_ID='xxx' \
+  -e AWS_SECRET_ACCESS_KEY='xxx' \
+  corticometrics/fs6-aws /bin/bash
 ```
 
 See [Creating an IAM User in Your AWS Account](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) to get values for `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.  If you just want to do a quick test, create a user and give it `AmazonS3FullAccess` but note this is not best practice.  See AWS docs for more info.  You can test it by trying to run
@@ -144,14 +144,14 @@ See [Working with Amazon S3 Buckets](http://docs.aws.amazon.com/AmazonS3/latest/
 
 ```
 docker run -it --rm \
--e FS_KEY='xxx' \
--e AWS_ACCESS_KEY_ID='xxx' \
--e AWS_SECRET_ACCESS_KEY='xxx' \
--e FS_SUB_S3_IN='s3://my-bucket/subjects/' \
--e FS_SUB_S3_OUT='s3://my-bucket/subjects-fs6-recon/' \
--e FS_SUB_NAME='bert' \
-corticometrics/fs6-aws \
-recon-all -s bert -all -parallel
+  -e FS_KEY='xxx' \
+  -e AWS_ACCESS_KEY_ID='xxx' \
+  -e AWS_SECRET_ACCESS_KEY='xxx' \
+  -e FS_SUB_S3_IN='s3://my-bucket/subjects/' \
+  -e FS_SUB_S3_OUT='s3://my-bucket/subjects-fs6-recon/' \
+  -e FS_SUB_NAME='bert' \
+  corticometrics/fs6-aws \
+  recon-all -s bert -all -parallel
 ```
 
 This will take a while, so you can kill it from another terminal (outside the container) with `docker ps` to find the containerID, then run `docker kill <containerID>`.
