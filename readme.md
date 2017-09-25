@@ -1,9 +1,6 @@
 # How to run FreeSurfer 6.0 in the cloud
 
-This guide describes how to run [FreeSurfer 6.0](https://surfer.nmr.mgh.harvard.edu/fswiki/ReleaseNotes) inside a [docker](https://www.docker.com/) container on 
-  - [AWS batch](https://aws.amazon.com/batch/).
-
-Other cloud providers and deployment options to come.
+This guide describes how to run [FreeSurfer 6.0](https://surfer.nmr.mgh.harvard.edu/fswiki/ReleaseNotes) inside a [docker](https://www.docker.com/) container on [AWS batch](https://aws.amazon.com/batch/).
 
 ## Setup
 
@@ -49,9 +46,48 @@ If either `FS_SUB_S3_OUT` *or* `FS_SUB_NAME` is not defined, this action wont be
 
 ### Access to AWS services
 
-The container also accepts standard AWS access key environment variables (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`) to grant access to AWS services.  This is useful to give the container S3 acess for testing locally.  See [Creating an IAM User in Your AWS Account](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)
+The container also accepts standard AWS access key environment variables (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`) to grant access to AWS services.  This is useful to give the container S3 acess for testing locally.  See [Creating an IAM User in Your AWS Account](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).  A typical set of permissions to read/write from an S3 bucket [might look like](https://aws.amazon.com/blogs/security/writing-iam-policies-how-to-grant-access-to-an-amazon-s3-bucket/):
 
-When running though AWS batch.  You either use these environment variables, or configure a role and attach it to the container when launching.  See [IAM Roles for Tasks](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html) for more info.
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowUserToSeeBucketListInTheConsole",
+            "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListAllMyBuckets"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::the-name-of-my-bucket"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::the-name-of-my-bucket/*"
+            ]
+        }
+    ]
+}
+```
+
+The environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` can also be used when running the container through AWS Batch, however this is not best-practice (since secret keys may be recorded in log files).  When using AWS batch, it is best practive to configure a role and attach it to the container when launching.  See [IAM Roles for Tasks](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html) for more info.
 
 ## Example usage
 
@@ -134,7 +170,7 @@ aws s3 ls
 Or try copying data to/from your bucket:
 ```
 mkdir -p /subjects/bert
-aws s3 cp --recursive s3://my-bucket/subjects/bert /subjects/bert/
+aws s3 sync s3://my-bucket/subjects/bert /subjects/bert/
 ls -lR /subjects/bert/
 ```
 
