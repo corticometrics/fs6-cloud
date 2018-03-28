@@ -1,4 +1,7 @@
-all: fs6-base fs6-aws
+all: fs6-payload fs6-base fs6-aws
+
+fs6-payload: docker/dockerfile--fs6-payload
+	docker build --no-cache -f ./docker/dockerfile--fs6-payload -t corticometrics/fs6-payload .
 
 fs6-base: docker/dockerfile--fs6-base
 	docker build --no-cache -f ./docker/dockerfile--fs6-base -t corticometrics/fs6-base .

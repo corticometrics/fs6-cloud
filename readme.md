@@ -102,7 +102,7 @@ docker run -it --rm \
 This doesn't have a FreeSurfer license or any subject data, so it's not particularily interesting.  You can confirm that FreeSurfer wont work by trying something like:
 
 ```
-mri_convert /opt/freesurfer/subjects/sample-001.mgz ~/test.nii.gz
+mri_convert /freesurfer/subjects/sample-001.mgz ~/test.nii.gz
 ```
 
 ### Launch the container locally with a license, drop into a bash shell.
@@ -119,7 +119,7 @@ Replace `xxx` with the output of `cat $FREESURFER_HOME/license.txt|base64`.  You
 You can confirm that FreeSurfer works by trying something like:
 
 ```
-mri_convert /opt/freesurfer/subjects/sample-001.mgz ~/test.nii.gz
+mri_convert /freesurfer/subjects/sample-001.mgz ~/test.nii.gz
 ```
 
 ### Launch the container locally with a FreeSurfer license and mount the subject data from a local drive; drop into a bash shell.
