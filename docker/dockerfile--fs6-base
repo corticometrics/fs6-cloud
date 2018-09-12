@@ -1,5 +1,7 @@
 FROM corticometrics/fs6-payload:latest
 
+RUN yum -y install libGLU libXmu
+
 # Configure environment
 ENV FS_OVERRIDE 0
 ENV OS Linux
