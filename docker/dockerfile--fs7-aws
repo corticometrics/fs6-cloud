@@ -1,0 +1,7 @@
+FROM corticometrics/fs7-base:latest
+
+RUN yum -y install aws-cli
+
+ADD docker/entrypoint-aws.bash /usr/local/bin/entrypoint-aws.bash
+ENTRYPOINT ["/usr/local/bin/entrypoint-aws.bash"]
+
