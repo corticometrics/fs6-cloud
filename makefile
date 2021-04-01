@@ -18,7 +18,7 @@ fs7-payload: docker/dockerfile--fs7-payload
 fs7-base: docker/dockerfile--fs7-base
 	docker build --no-cache -f ./docker/dockerfile--fs7-base -t corticometrics/fs7-base .
 
-fs7-aws: fs6-base docker/dockerfile--fs7-aws
+fs7-aws: fs7-base docker/dockerfile--fs7-aws
 	docker build --no-cache -f ./docker/dockerfile--fs7-aws  -t corticometrics/fs7-aws .
 
 PUSH_VERSION ?= fs7
