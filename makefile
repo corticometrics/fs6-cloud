@@ -25,4 +25,4 @@ PUSH_VERSION ?= fs7
 push:
 	docker push corticometrics/${PUSH_VERSION}-payload
 	docker push corticometrics/${PUSH_VERSION}-base
-	docker push corticometrics/corticometrics/${PUSH_VERSION}-aws
+	docker push corticometrics/${PUSH_VERSION}-aws
