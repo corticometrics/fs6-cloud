@@ -1,0 +1,25 @@
+FROM corticometrics/fs7-payload:latest
+
+RUN yum -y install binutils libGLU libXmu
+
+# Configure environment
+ENV FS_OVERRIDE 0
+ENV OS Linux
+ENV FIX_VERTEX_AREA=
+ENV FSF_OUTPUT_FORMAT nii.gz
+ENV SUBJECTS_DIR /subjects
+VOLUME /subjects
+# ---------------------------------------------------------------------------
+ENV MNI_DIR $FREESURFER_HOME/mni
+ENV LOCAL_DIR $FREESURFER_HOME/local
+ENV FSFAST_HOME $FREESURFER_HOME/fsfast
+ENV MINC_BIN_DIR $FREESURFER_HOME/mni/bin
+ENV MINC_LIB_DIR $FREESURFER_HOME/mni/lib
+ENV MNI_DATAPATH $FREESURFER_HOME/mni/data
+ENV FMRI_ANALYSIS_DIR $FREESURFER_HOME/fsfast
+ENV PERL5LIB $FREESURFER_HOME/mni/lib/perl5/5.8.5
+ENV MNI_PERL5LIB $FREESURFER_HOME/mni/lib/perl5/5.8.5
+ENV PATH $FREESURFER_HOME/bin:$FREESURFER_HOME/fsfast/bin:$FREESURFER_HOME/tktools:$FREESURFER_HOME/mni/bin:$PATH
+
+ADD docker/entrypoint-base.bash /usr/local/bin/entrypoint-base.bash
+ENTRYPOINT ["/usr/local/bin/entrypoint-base.bash"]

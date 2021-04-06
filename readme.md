@@ -2,6 +2,9 @@
 
 This guide describes how to run [FreeSurfer 6.0](https://surfer.nmr.mgh.harvard.edu/fswiki/ReleaseNotes) inside a [docker](https://www.docker.com/) container on [AWS batch](https://aws.amazon.com/batch/).
 
+**NOTE**: A FreeSurfer 7.1.1 container is now available! The commands below should work by changing `corticometrics/fs6-aws` to `corticometrics/fs7-aws` when running the commands below.
+The new container hasn't been tested as thoroughly, so please leave an issue if you notice anything strange!
+
 ## Setup
 
 - See [Setting up with AWS batch](http://docs.aws.amazon.com/batch/latest/userguide/get-set-up-for-aws-batch.html)
